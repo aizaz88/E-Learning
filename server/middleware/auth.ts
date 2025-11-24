@@ -7,13 +7,13 @@ import { redis } from "../utils/redis";
 
 export const isAuthnticated = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
-    const acccess_token = req.cookies.acccess_token as string;
-    if (!acccess_token) {
+    const access_token = req.cookies.access_token as string;
+    if (!access_token) {
       return next(new ErrorHandler("please login to access resource", 400));
     }
 
     const decoded = jwt.verify(
-      acccess_token,
+      access_token,
       process.env.ACCESS_TOKEN as string
     ) as JwtPayload;
     if (!decoded) {
@@ -29,3 +29,17 @@ export const isAuthnticated = catchAsyncErrors(
     next();
   }
 );
+
+//validate user role
+export const authorizeRoles = (...roles: string[]) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (!roles.includes(req.user?.role || ""))
+      return next(
+        new ErrorHandler(
+          `Role: ${req.user?.role} is not allowed to access this resourse`,
+          403
+        )
+      );
+    next();
+  };
+};

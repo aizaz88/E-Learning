@@ -10,7 +10,7 @@ import { redis } from "../utils/redis";
 import cloudinary from "cloudinary";
 import sendMail from "../utils/sendMail";
 import { accessTokenOptions, sendToken } from "../utils/jwt";
-import { getUserById } from "../services/user.services";
+import { getAllUserService, getUserById } from "../services/user.services";
 
 //register
 interface IRegistrationBody {
@@ -383,5 +383,14 @@ export const updateUserProfilePicture = catchAsyncErrors(
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
+  }
+);
+
+//get all user admin
+export const getAllUsers = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      getAllUserService(res);
+    } catch (error) {}
   }
 );

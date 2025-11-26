@@ -9,7 +9,7 @@ interface IReview extends Document {
   user: IUser;
   rating: number;
   comment: string;
-  commentReplies: IComment[];
+  commentReplies?: IComment[];
 }
 interface ILink extends Document {
   title: string;

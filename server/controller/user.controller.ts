@@ -10,7 +10,11 @@ import { redis } from "../utils/redis";
 import cloudinary from "cloudinary";
 import sendMail from "../utils/sendMail";
 import { accessTokenOptions, sendToken } from "../utils/jwt";
-import { getAllUserService, getUserById } from "../services/user.services";
+import {
+  getAllUserService,
+  getUserById,
+  updateUserRoleService,
+} from "../services/user.services";
 
 //register
 interface IRegistrationBody {
@@ -391,6 +395,43 @@ export const getAllUsers = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       getAllUserService(res);
-    } catch (error) {}
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+//update user role --admin
+export const updateUserRole = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id, role } = req.body;
+      updateUserRoleService(res, id, role);
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+//Delete user by admin
+export const deleteUser = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const user = await userModel.findById(id);
+
+      if (!user) {
+        return next(new ErrorHandler("User not exist ", 401));
+      }
+
+      await user.deleteOne({ id });
+      await redis.del(id);
+      res.status(201).json({
+        success: true,
+        message: "User deleted successfully ",
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
   }
 );

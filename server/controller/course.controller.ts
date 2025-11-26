@@ -417,7 +417,7 @@ export const deleteCourse = catchAsyncErrors(
       const course = await CourseModel.findById(id);
 
       if (!course) {
-        return next(new ErrorHandler("User not exist ", 401));
+        return next(new ErrorHandler("User not exist ", 404));
       }
 
       await course.deleteOne({ id });

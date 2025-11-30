@@ -1,3 +1,4 @@
+"use client";
 import { styles } from "@/app/styles/style";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { VscWorkspaceTrusted } from "react-icons/vsc";

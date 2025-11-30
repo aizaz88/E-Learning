@@ -21,14 +21,14 @@ const Hero = () => {
     <>
       <div className="w-full min-h-screen flex flex-col lg:flex-row items-center justify-center lg:justify-between px-4 lg:px-8 py-10 lg:py-0 relative overflow-hidden">
         {/* Animated background circle */}
-        <div className="absolute top-[75px] lg:left-[100px]  w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] hero_animation rounded-full opacity-20 lg:opacity-30"></div>
+        <div className="absolute top-[110px] lg:left-[100px]  w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] hero_animation rounded-full opacity-20 lg:opacity-30"></div>
         {/* Hero banner Image */}
         <div className="lg:w-1/2 flex items-center justify-center z-10 mb-8 lg:mb-0">
           <Image
             src={require("../../assets/avatar.webp")}
             alt=""
-            width={450}
-            height={450}
+            width={400}
+            height={400}
             className="rounded-full"
           />
         </div>

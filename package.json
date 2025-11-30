@@ -1,5 +1,8 @@
 {
   "dependencies": {
-    "node-cron": "^4.2.1"
+    "@reduxjs/toolkit": "^2.11.0",
+    "formik": "^2.4.9",
+    "node-cron": "^4.2.1",
+    "yup": "^1.7.1"
   }
 }

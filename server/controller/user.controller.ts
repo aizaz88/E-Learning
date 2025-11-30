@@ -9,7 +9,11 @@ import path from "path";
 import { redis } from "../utils/redis";
 import cloudinary from "cloudinary";
 import sendMail from "../utils/sendMail";
-import { accessTokenOptions, sendToken } from "../utils/jwt";
+import {
+  accessTokenOptions,
+  refreshTokenOptions,
+  sendToken,
+} from "../utils/jwt";
 import {
   getAllUserService,
   getUserById,
@@ -220,7 +224,7 @@ export const updateAccessToken = catchAsyncErrors(
       req.user = user;
 
       res.cookie("access_token", accessToken, accessTokenOptions);
-      res.cookie("refresh_token", refresh_Token, accessTokenOptions);
+      res.cookie("refresh_token", refresh_Token, refreshTokenOptions);
       await redis.set(user._id, JSON.stringify(user), "EX", 604800);
       next();
     } catch (error: any) {

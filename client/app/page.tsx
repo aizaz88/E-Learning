@@ -10,6 +10,8 @@ interface Props {
 const Page: FC<Props> = (prop) => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
+  const [route, setRoute] = useState("Login");
+
   return (
     <div>
       <Heading
@@ -17,7 +19,13 @@ const Page: FC<Props> = (prop) => {
         description="A  Sphere of Knowledge for Everyone."
         keywords="Programming,MERN,Redux,AI/ML"
       />
-      <Header open={open} setOpen={setOpen} activeItem={activeItem} />
+      <Header
+        open={open}
+        setOpen={setOpen}
+        activeItem={activeItem}
+        route={route}
+        setRoute={setRoute}
+      />
       <Hero />
     </div>
   );

@@ -5,16 +5,28 @@ import React, { FC, useEffect, useState } from "react";
 import NavItems from "../utils/NavItems";
 import { ThemeSwitcher } from "../utils/ThemeSwitcher";
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
+import CustomModel from "../utils/CustomModel";
+import Login from "../components/Auth/Login";
+import SignUp from "../components/Auth/SignUp";
+import Verification from "../components/Auth/Verification";
+import { useSelector } from "react-redux";
+import Image from "next/image";
+import avatar from "../../client/assets/avatar.png";
 
 type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
   activeItem: number;
+  route: string;
+  setRoute: (route: string) => void;
 };
 
-const Header: FC<Props> = ({ activeItem, setOpen }) => {
+const Header: FC<Props> = ({ activeItem, setOpen, open, route, setRoute }) => {
   const [active, setActive] = useState(false);
   const [openSideBar, setOpenSideBar] = useState(false);
+  const { user } = useSelector((state: any) => state.auth);
+
+  console.log(user);
 
   useEffect(() => {
     const onScroll = () => {
@@ -29,7 +41,7 @@ const Header: FC<Props> = ({ activeItem, setOpen }) => {
   };
 
   return (
-    <header className="w-full fixed top-0 left-0 z-[80]">
+    <div className="w-full fixed top-0 left-0 z-[80]">
       <div
         className={`h-[80px] w-full border-b dark:border-white/10 transition-all duration-500 
         ${
@@ -48,7 +60,7 @@ const Header: FC<Props> = ({ activeItem, setOpen }) => {
           </Link>
 
           {/* NAVIGATION + THEME + USER */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 ">
             {/* Desktop Nav */}
             <div className="hidden md:flex">
               <NavItems activeItem={activeItem} isMobile={false} />
@@ -64,7 +76,19 @@ const Header: FC<Props> = ({ activeItem, setOpen }) => {
 
             {/* Profile Icon (Desktop only) */}
             <button onClick={() => setOpen(true)} className="hidden md:block">
-              <HiOutlineUserCircle className="text-[28px] text-black dark:text-white" />
+              {user ? (
+                <Link href={"/profile"}>
+                  <Image
+                    src={user.avatar ? user.avatar : avatar}
+                    alt="profile"
+                    width={28}
+                    height={28}
+                    className="rounded-full object-cover"
+                  />
+                </Link>
+              ) : (
+                <HiOutlineUserCircle className="text-[28px] text-black dark:text-white" />
+              )}
             </button>
           </div>
         </div>
@@ -94,7 +118,47 @@ const Header: FC<Props> = ({ activeItem, setOpen }) => {
           </div>
         </div>
       )}
-    </header>
+
+      {route === "Login" && (
+        <>
+          {open && (
+            <CustomModel
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={Login}
+            />
+          )}
+        </>
+      )}
+      {route === "Sign-Up" && (
+        <>
+          {open && (
+            <CustomModel
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={SignUp}
+            />
+          )}
+        </>
+      )}
+      {route === "Verification" && (
+        <>
+          {open && (
+            <CustomModel
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={Verification}
+            />
+          )}
+        </>
+      )}
+    </div>
   );
 };
 

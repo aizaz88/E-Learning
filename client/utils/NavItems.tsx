@@ -13,6 +13,7 @@ const navLinks = [
   { name: "Courses", url: "/courses" },
   { name: "About", url: "/about" },
   { name: "Contact", url: "/contact" },
+  { name: "FAQ", url: "/faq" },
 ];
 
 const NavItems: React.FC<Props> = ({ activeItem, isMobile }) => {
@@ -21,7 +22,7 @@ const NavItems: React.FC<Props> = ({ activeItem, isMobile }) => {
       className={`${
         isMobile
           ? "flex flex-col gap-6 mt-8 text-lg"
-          : "flex items-center gap-10 text-[17px]" // DESKTOP SPACING FIXED
+          : "flex items-center gap-10  text-[17px]" // DESKTOP SPACING FIXED
       }`}
     >
       {navLinks.map((link, index) => {
@@ -31,7 +32,7 @@ const NavItems: React.FC<Props> = ({ activeItem, isMobile }) => {
           <Link
             key={index}
             href={link.url}
-            className={`transition font-medium tracking-wide 
+            className={`transition font-medium tracking-wide m-6
               ${
                 isActive
                   ? "text-black dark:text-white font-semibold"

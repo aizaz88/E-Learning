@@ -1,10 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  eslint: {
-    // ✅ This disables ESLint during `next build` (important for Vercel)
-    ignoreDuringBuilds: true,
-  },
   images: {
     remotePatterns: [
       {

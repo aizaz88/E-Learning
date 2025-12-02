@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BiSearch } from "react-icons/bi";
-
+import avatar from "../../assets/avatar.webp";
 const Hero = () => {
   const [search, setSearch] = useState("");
   const router = useRouter();
@@ -25,7 +25,7 @@ const Hero = () => {
         {/* Hero banner Image */}
         <div className="lg:w-1/2 flex items-center justify-center z-10 mb-8 lg:mb-0">
           <Image
-            src={require("../../assets/avatar.webp")}
+            src={avatar}
             alt=""
             width={400}
             height={400}

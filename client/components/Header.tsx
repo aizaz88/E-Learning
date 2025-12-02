@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import React, { FC, useEffect, useState } from "react";
 import NavItems from "../utils/NavItems";
@@ -12,7 +11,9 @@ import Verification from "../components/Auth/Verification";
 import { useSelector } from "react-redux";
 import Image from "next/image";
 import avatar from "../../client/assets/avatar.png";
-
+import { useSession } from "next-auth/react";
+import { useSocialAuthMutation } from "../redux/features/auth/authApi";
+import toast from "react-hot-toast";
 type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -25,13 +26,33 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, route, setRoute }) => {
   const [active, setActive] = useState(false);
   const [openSideBar, setOpenSideBar] = useState(false);
   const { user } = useSelector((state: any) => state.auth);
+  const { data } = useSession();
+  const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
+  console.log("User: ", user);
+  console.log("Data: ", data);
 
-  console.log(user);
+  useEffect(() => {
+    if (!user && data) {
+      socialAuth({
+        email: data?.user?.email, // FIXED spelling
+        name: data?.user?.name,
+        avatar: data?.user?.image, // FIXED field name
+      });
+    }
+
+    if (isSuccess) {
+      toast.success("Login Successfully!");
+    }
+  }, [data, user]);
 
   useEffect(() => {
     const onScroll = () => {
       setActive(window.scrollY > 80);
     };
+
+    // run only on client
+    onScroll();
+
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);

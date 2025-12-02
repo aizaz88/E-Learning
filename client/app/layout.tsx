@@ -1,10 +1,11 @@
+"use client";
 import "./globals.css";
-import type { Metadata } from "next";
 import { Poppins, Josefin_Sans } from "next/font/google";
 import { ThemeProvider } from "../utils/theme-provider";
 import { Toaster } from "react-hot-toast";
-import { Providers } from "./Provider";
+import { ProviderWrapper } from "./Provider";
 import { SessionProvider } from "next-auth/react";
+import { useEffect, useState } from "react";
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -17,31 +18,28 @@ const josefin = Josefin_Sans({
   variable: "--font-josefin",
 });
 
-export const metadata: Metadata = {
-  title: "EduSphere",
-  description: "A modern learning management system built with Next.js",
-};
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${poppins.variable} ${josefin.variable}`}>
+    <html
+      suppressHydrationWarning={true}
+      lang="en"
+      className={`${poppins.variable} ${josefin.variable}`}
+    >
       <body className="bg-white dark:bg-black duration-300">
-        <Providers>
-          <SessionProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="light"
-              enableSystem={false}
-            >
-              {children}
-              <Toaster position="top-center" reverseOrder={false} />
-            </ThemeProvider>
-          </SessionProvider>
-        </Providers>
+        <ProviderWrapper>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem={false}
+          >
+            <SessionProvider>{children}</SessionProvider>
+            <Toaster position="top-center" reverseOrder={false} />
+          </ThemeProvider>
+        </ProviderWrapper>
       </body>
     </html>
   );

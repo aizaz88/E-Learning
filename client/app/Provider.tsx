@@ -1,12 +1,11 @@
-"use client";
+import React, { ReactNode } from "react";
 import { Provider } from "react-redux";
 import { store } from "../redux/store";
-import { ReactNode } from "react";
 
-interface ProviderProps {
+interface IProviderProps {
   children: ReactNode;
 }
 
-export function Providers({ children }: ProviderProps) {
+export const ProviderWrapper = ({ children }: IProviderProps) => {
   return <Provider store={store}>{children}</Provider>;
-}
+};

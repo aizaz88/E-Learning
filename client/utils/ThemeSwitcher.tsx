@@ -9,13 +9,13 @@ export const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Defer state update to the next browser frame (no cascading render warning)
-    const raf = requestAnimationFrame(() => setMounted(true));
-
-    return () => cancelAnimationFrame(raf);
+    setMounted(true);
   }, []);
 
-  if (!mounted) return null;
+  // ✅ FIX: Return placeholder instead of null
+  if (!mounted) {
+    return <div className="mx-4 w-[25px] h-[25px]" />;
+  }
 
   return (
     <div className="mx-4">

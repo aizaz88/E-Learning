@@ -13,7 +13,7 @@ const Page: FC<Props> = (prop) => {
   const [route, setRoute] = useState("Login");
 
   return (
-    <div>
+    <>
       <Heading
         title="EduSphere"
         description="A  Sphere of Knowledge for Everyone."
@@ -27,7 +27,7 @@ const Page: FC<Props> = (prop) => {
         setRoute={setRoute}
       />
       <Hero />
-    </div>
+    </>
   );
 };
 

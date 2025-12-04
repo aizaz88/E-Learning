@@ -1,0 +1,36 @@
+"use client";
+import React, { useState } from "react";
+import Protected from "../hooks/useProtected";
+import Heading from "../../utils/Heading";
+import Header from "../../components/Header";
+import Profile from "../../components/Profile/Profile";
+import { useSelector } from "react-redux";
+
+const Page = () => {
+  const [open, setOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState(5);
+  const [route, setRoute] = useState("Login");
+  const { user } = useSelector((state: any) => state.auth);
+
+  return (
+    <>
+      <Protected>
+        <Heading
+          title={`${user?.name} Profile-EduSphere`}
+          description="ELearning is a platform for online learning and education."
+          keywords="ELearning, online learning, education, courses, tutorials, training"
+        />
+        <Header
+          open={open}
+          setOpen={setOpen}
+          activeItem={activeItem}
+          setRoute={setRoute}
+          route={route}
+        />
+        <Profile user={user} />
+      </Protected>
+    </>
+  );
+};
+
+export default Page;

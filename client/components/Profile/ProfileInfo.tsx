@@ -5,7 +5,10 @@ import React, { FC, useEffect, useState } from "react";
 import { AiOutlineCamera } from "react-icons/ai";
 import avatarDefault from "../../assets/avatar.png";
 import toast from "react-hot-toast";
-import { useUpdateAvatarMutation } from "@/redux/features/user/userApi";
+import {
+  useEditProfileMutation,
+  useUpdateAvatarMutation,
+} from "@/redux/features/user/userApi";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 
 type Props = {
@@ -18,6 +21,8 @@ const ProfileInfo: FC<Props> = ({ user, avatar }) => {
   const [loadUser, setLoadUser] = useState(false);
   const [updateAvatar, { isSuccess, error }] = useUpdateAvatarMutation();
   const {} = useLoadUserQuery(undefined, { skip: loadUser ? false : true });
+  const [editProfile, { isSuccess: success, error: UpdatedError }] =
+    useEditProfileMutation();
 
   const imageHandler = async (e: any) => {
     const fileReader = new FileReader();
@@ -30,14 +35,23 @@ const ProfileInfo: FC<Props> = ({ user, avatar }) => {
     fileReader.readAsDataURL(e.target?.files[0]);
   };
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || success) {
       setLoadUser(true);
     }
-    if (error) {
+    if (error || UpdatedError) {
       console.log(error);
     }
-  }, [isSuccess, error]);
+    if (success) {
+      toast.success("Profile Updated!");
+    }
+  }, [isSuccess, error, success, UpdatedError]);
 
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    if (name !== "") {
+      await editProfile(name);
+    }
+  };
   return (
     <>
       <div className="w-full flex justify-center">
@@ -60,8 +74,8 @@ const ProfileInfo: FC<Props> = ({ user, avatar }) => {
             accept="image/png,image/jpg,image/jpeg,image/webp"
           />
           <label htmlFor="avatar">
-            <div className="w-[30px] h-[30px] bg-slate-900 rounded-full absolute bottom-2 right-2 flex items-center justify-center cursor-pointer">
-              <AiOutlineCamera size={20} className="z-1" />
+            <div className="w-[30px] h-[30px] bg-white rounded-full absolute bottom-2 right-2 flex items-center justify-center cursor-pointer">
+              <AiOutlineCamera size={20} className="z-1 " />
             </div>
           </label>
         </div>
@@ -70,7 +84,7 @@ const ProfileInfo: FC<Props> = ({ user, avatar }) => {
       <br />
 
       <div className="w-full pl-6 800px:pl-10">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="800px:w-[50%] m-auto block pb-4">
             <div className="w-[100%] dark:text-white text-black pt-2">
               <label className="block" htmlFor="name">

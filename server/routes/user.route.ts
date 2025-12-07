@@ -20,21 +20,38 @@ const userRouter = express.Router();
 userRouter.post("/registration", registerationUser);
 userRouter.post("/activate-user", activateUser);
 userRouter.post("/login", loginUser);
-userRouter.get("/logout", isAuthnticated, logoutUser);
+userRouter.get("/logout", updateAccessToken, isAuthnticated, logoutUser);
 userRouter.get("/refresh", updateAccessToken);
-userRouter.get("/me", isAuthnticated, getUserInfo);
+userRouter.get("/me", updateAccessToken, isAuthnticated, getUserInfo);
 userRouter.post("/social-auth", socialAuth);
-userRouter.put("/update-user-info", isAuthnticated, updateUser);
-userRouter.put("/update-user-password", isAuthnticated, updatePassword);
-userRouter.put("/update-user-avatar", isAuthnticated, updateUserProfilePicture);
+userRouter.put(
+  "/update-user-info",
+  updateAccessToken,
+  isAuthnticated,
+  updateUser
+);
+userRouter.put(
+  "/update-user-password",
+  updateAccessToken,
+  isAuthnticated,
+  updatePassword
+);
+userRouter.put(
+  "/update-user-avatar",
+  updateAccessToken,
+  isAuthnticated,
+  updateUserProfilePicture
+);
 userRouter.get(
   "/get-users",
+  updateAccessToken,
   isAuthnticated,
   authorizeRoles("admin"),
   getAllUsers
 );
 userRouter.put(
   "/update-user-role",
+  updateAccessToken,
   isAuthnticated,
   authorizeRoles("admin"),
   updateUserRole
@@ -42,6 +59,7 @@ userRouter.put(
 
 userRouter.delete(
   "/delete-user/:id",
+  updateAccessToken,
   isAuthnticated,
   authorizeRoles("admin"),
   deleteUser

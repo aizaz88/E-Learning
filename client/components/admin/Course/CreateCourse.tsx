@@ -1,19 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CourseInformation from "./CourseInformation";
 import CourseOptions from "./CourseOptions";
 import CourseData from "./CourseData";
 import CourseContent from "./CourseContent";
 import CoursePreview from "./CoursePreview";
+import { useCreateCourseMutation } from "@/redux/features/courses/coursesApi";
+import toast from "react-hot-toast";
+import { redirect } from "next/navigation";
 type Props = {};
 
 const CreateCourse = (props: Props) => {
+  const [createCourse, { isSuccess, error, isLoading }] =
+    useCreateCourseMutation();
   const [active, setActive] = useState(0);
   const [courseInfo, setCourseInfo] = useState({
     name: "",
     description: "",
     price: "",
     estimatedPrice: "",
-    categories: "",
+    categories: ["Web Development", "MERN", "AI", "Cyber Security"],
+    selectedCategory: "",
     tags: "",
     level: "",
     demoUrl: "",
@@ -38,6 +44,20 @@ const CreateCourse = (props: Props) => {
     },
   ]);
   const [courseData, setCourseData] = useState({});
+
+  // Handling success and error notifications
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Course Created Successfully!");
+      redirect("/admin/all-course");
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorMessage = error as any;
+        toast.error(errorMessage?.data.message);
+      }
+    }
+  }, [isSuccess, error]);
   // Formating all course input data into Object
   const handleSubmit = async () => {
     //format benfits array
@@ -66,7 +86,7 @@ const CreateCourse = (props: Props) => {
       name: courseInfo.name,
       description: courseInfo.description,
       price: courseInfo.price,
-      categories: courseInfo.categories,
+      categories: courseInfo.selectedCategory,
       estimatedPrice: courseInfo.estimatedPrice,
       tags: courseInfo.tags,
       thumbnail: courseInfo.thumbnail,
@@ -80,8 +100,12 @@ const CreateCourse = (props: Props) => {
     setCourseData(data);
   };
 
-  //Course Create
-  const handleCourseCreate = () => {};
+  //Submits the course data to the API
+  const handleCourseCreate = async () => {
+    if (!isLoading) {
+      await createCourse(courseData);
+    }
+  };
 
   return (
     <div className="w-full flex min-h-screen">

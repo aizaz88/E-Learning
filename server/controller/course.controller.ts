@@ -14,6 +14,7 @@ import sendMail from "../utils/sendMail";
 import ejs from "ejs";
 import NotificationModel from "../model/notification.model";
 import axios from "axios";
+
 export const uploadCourse = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -108,23 +109,14 @@ export const getSingleCourse = catchAsyncErrors(
 export const getAllCourses = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const isCacheExits = await redis.get("allCourses");
-      if (isCacheExits) {
-        const course = JSON.parse(isCacheExits);
-        res.status(200).json({
-          success: true,
-          course,
-        });
-      } else {
-        const courses = await CourseModel.find().select(
-          "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
-        );
-        await redis.set("allCourses", JSON.stringify(courses));
-        res.status(200).json({
-          success: true,
-          courses,
-        });
-      }
+      const courses = await CourseModel.find().select(
+        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+      );
+
+      res.status(200).json({
+        success: true,
+        courses,
+      });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }

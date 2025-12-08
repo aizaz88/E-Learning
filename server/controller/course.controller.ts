@@ -50,7 +50,7 @@ export const editCourse = catchAsyncErrors(
       const thumbnail = data.thumbnail;
       const courseId = req.params.id;
       const courseData = (await CourseModel.findById(courseId)) as any;
-      if (thumbnail) {
+      if (thumbnail && !thumbnail.startsWith("https")) {
         await cloudinary.v2.uploader.destroy(courseData.thumbnail.public_id);
         const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
           folder: "courses",

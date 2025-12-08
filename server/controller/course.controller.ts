@@ -122,6 +122,16 @@ export const getAllCourses = catchAsyncErrors(
     }
   }
 );
+//get all courses by admin
+export const getAllAdminCourses = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      getAllCoursesService(res);
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }
+);
 
 //get course by user
 export const getCourseByUser = catchAsyncErrors(
@@ -387,17 +397,6 @@ export const addReplyToReview = catchAsyncErrors(
       });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
-    }
-  }
-);
-
-// get all courses ---admin
-export const getAllCoursesAdmin = catchAsyncErrors(
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      getAllCoursesService(res);
-    } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
     }
   }
 );

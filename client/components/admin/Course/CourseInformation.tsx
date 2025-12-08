@@ -16,6 +16,7 @@ const CourseInformation: FC<Props> = ({
 }) => {
   // State to track drag status for file drop area
   const [dragging, setDragging] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   // Handles form submission, moves to the next step
   const hanndleSubmit = (e: any) => {
@@ -166,23 +167,17 @@ const CourseInformation: FC<Props> = ({
             <label htmlFor="categories" className={styles.label}>
               Course Category
             </label>
-
             <select
               id="categories"
               className={`${styles.input} dark:bg-slate-900 dark:text-white`}
-              value={courseInfo.selectedCategory}
-              onChange={(e) =>
-                setCourseInfo({
-                  ...courseInfo,
-                  selectedCategory: e.target.value,
-                })
+              value={courseInfo.categories}
+              onChange={(e: any) =>
+                setCourseInfo({ ...courseInfo, categories: e.target.value })
               }
             >
-              <option value="">Select Category</option>
-
-              {courseInfo.categories.map((category: string, index: number) => (
-                <option key={index} value={category}>
-                  {category}
+              {categories.map((category: any) => (
+                <option key={category._id} value={category.title}>
+                  {category.title}
                 </option>
               ))}
             </select>

@@ -116,8 +116,8 @@ const CourseContent: FC<Props> = ({
       courseContentData[courseContentData.length - 1].title === "" ||
       courseContentData[courseContentData.length - 1].description === "" ||
       courseContentData[courseContentData.length - 1].videoUrl === "" ||
-      courseContentData[courseContentData.length - 1].links[0].title === "" ||
-      courseContentData[courseContentData.length - 1].links[0].url === "" ||
+      courseContentData[courseContentData.length - 1].links[0]?.title === "" ||
+      courseContentData[courseContentData.length - 1].links[0]?.url === "" ||
       courseContentData[courseContentData.length - 1].videoLength === ""
     ) {
       toast.error("Section is not completed yet.");
@@ -273,7 +273,7 @@ const CourseContent: FC<Props> = ({
                     />
                     <br />
                   </div>
-                  {item.links.map((link: any, linkIndex: number) => (
+                  {item.links?.map((link: any, linkIndex: number) => (
                     <div className="mb-3 block" key={`current-${linkIndex}`}>
                       <div className="w-full flex items-center justify-between">
                         <label className={styles.label}>

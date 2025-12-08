@@ -8,8 +8,8 @@ import {
   deleteCourse,
   editCourse,
   generateVideoUrl,
+  getAllAdminCourses,
   getAllCourses,
-  getAllCoursesAdmin,
   getCourseByUser,
   getSingleCourse,
   uploadCourse,
@@ -36,6 +36,13 @@ courseRouter.put(
 courseRouter.get("/get-course/:id", getSingleCourse);
 courseRouter.get("/get-courses", getAllCourses);
 courseRouter.get(
+  "/get-admin-courses",
+  isAuthnticated,
+  authorizeRoles("admin"),
+  getAllAdminCourses
+);
+
+courseRouter.get(
   "/get-course-content/:id",
   updateAccessToken,
   isAuthnticated,
@@ -61,14 +68,6 @@ courseRouter.put(
   isAuthnticated,
   authorizeRoles("admin"),
   addReplyToReview
-);
-
-courseRouter.get(
-  "/get-courses-admin",
-  updateAccessToken,
-  isAuthnticated,
-  authorizeRoles("admin"),
-  getAllCoursesAdmin
 );
 
 courseRouter.post("/getVdoCipherOTP", generateVideoUrl);
